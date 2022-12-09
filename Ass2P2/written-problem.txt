@@ -1,0 +1,103 @@
+
+  PART A
+Let's assume that the tree node includes
+* An array of child nodes: child[0...3]
+* An array of values in the node val[1...3] 
+
+Also assume that the tree contains an odd number of elements
+=============================================================================
+sortedlst=[] 
+findmedian(tree) 
+  treetolist(tree)
+  numelems=length(sortedlst)
+
+  return sortedlst[(numelems+1)/2]
+=============================================================================
+treetolist(tree)
+  if tree is empty
+    return
+
+  treetolist(tree.child[0])
+  if (tree.child[1] NOT NULL)
+    append(sortedlst,tree.val[1])
+  treetolist(tree.child[1])
+  if (tree.child[2] NOT NULL)
+    append(sortedlst,tree.val[2])
+  treetolist(tree.child[2])
+  if (tree.child[3] NOT NULL)
+    append(sortedlst,tree.val[3])
+  treetolist(tree.child[3])
+=============================================================================
+=============================================================================
+  PART B
+
+Tree node contains
+* An array of child nodes: eg child[0...3]
+* An array of values in the node: eg val[1...3] 
+* An integer that represents the numdescendants
+
+updatedesc(node)
+  total = 0
+  
+  for childnode in node.child
+    total += childnode.ndesc
+    for elem in childnode.val
+      total+=1
+  
+  node.ndesc = total
+  
+
+=============================================================================
+=============================================================================
+  PART C
+nleft=0
+nright=0
+
+findMedian(tree)
+  num_elem = tree.ndesc+length(tree.val)
+  calculateMedian(tree,num_elem)
+
+=============================================================================
+
+calculateMedian(tree,num_elem)
+  if tree.ndesc == 0
+    return middle(val)
+  
+  if (length(tree.val)==1)
+    // Go left
+    if ((left_child.ndesc + length(left_child.val))+nleft >= (num_elem+1)/2)
+      nright += numberofelements(right_child)+1
+      calculateMedian(left_child,num_elem)
+  
+    // Go right
+    else if ((right_child.ndesc + length(right_child.val))+nright >= (num_elem+1)/2)
+      nleft += numberofelements(left_child)+1
+      calculateMedian(right_child,num_elem)
+
+    // Evenly spread on both sides
+    else if ((left_child.ndesc + length(left_child.val))+nleft == (num_elem+1)/2 - 1)
+      return middle(tree.val)
+
+  else if (length(tree.val)==2)
+    // Go left
+    if (left_child.ndesc + length(left_child.val))+nleft >= (num_elem+1)/2)  
+      nright += numberofelements(middle_child,right_child)+2
+      calculateMedian(left_child,num_elem)
+  
+    // Go right
+    else if ((right_child.ndesc + length(right_child.val))+nright >= (num_elem+1)/2)
+      nleft += numberofelements(middle_child,left_child)+2
+      calculateMedian(right_child,num_elem)
+         
+    // Evenly spread on both sides
+    else if (left_child.ndesc + length(left_child) + nleft == right_child.ndesc + length(right_child) + nright)
+      nleft = numberofelements(left_child)+1
+      nright = numberofelements(right_child)+1
+      calculateMedian(middle_child,num_elem)
+
+=============================================================================
+=============================================================================
+  PART D
+O(log(n)), since we are ignoring half or a thrid of the elements in the tree.
+
+
